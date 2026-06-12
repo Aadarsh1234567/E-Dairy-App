@@ -33,7 +33,7 @@ DEFAULT_SETTINGS = {
     "organization_phone":        "",
     "organization_logo":         "",
     "backup_path":               "",          # resolved at runtime
-    "default_language":          "EN",
+    "default_language":          "NE",
     "app_version":               APP_VERSION,
     "idle_lock_minutes":         "15",
     "auto_backup_hour":          "18",
