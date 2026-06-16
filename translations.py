@@ -181,6 +181,44 @@ MILK = {
                              "NE": "के तपाईं यो कारोबार रद्द गर्न निश्चित हुनुहुन्छ? यो पूर्ववत हुन सक्दैन।"},
 }
 
+# ── Product Management ─────────────────────────────────────────────────────────
+PRODUCT_MGMT = {
+    "product_management":    {"EN": "Product Management",    "NE": "उत्पादन व्यवस्थापन"},
+    "product_list":          {"EN": "Product List",          "NE": "उत्पादन सूची"},
+    "add_product":           {"EN": "Add Product",           "NE": "उत्पादन थप्नुस्"},
+    "edit_product":          {"EN": "Edit Product",          "NE": "उत्पादन सम्पादन"},
+    "product_name_en":       {"EN": "Name (English)",        "NE": "नाम (अंग्रेजी)"},
+    "product_name_ne":       {"EN": "Name (Nepali)",         "NE": "नाम (नेपाली)"},
+    "unit_label":            {"EN": "Unit",                  "NE": "इकाई"},
+    "unit_liter":            {"EN": "Liter",                 "NE": "लिटर"},
+    "unit_kg":               {"EN": "KG",                   "NE": "केजी"},
+    "default_rate_label":    {"EN": "Default Rate (NPR)",    "NE": "पूर्वनिर्धारित दर (NPR)"},
+    "default_rate_hint":     {"EN": "Pre-filled on transaction screen.",
+                              "NE": "कारोबार स्क्रिनमा स्वतः भरिन्छ।"},
+    "is_milk_label":         {"EN": "Product Type",          "NE": "उत्पादन प्रकार"},
+    "is_milk_yes":           {"EN": "Milk Product",          "NE": "दूध उत्पादन"},
+    "is_milk_no":            {"EN": "Other Product",         "NE": "अन्य उत्पादन"},
+    "product_saved":         {"EN": "Product saved successfully.",
+                              "NE": "उत्पादन सफलतापूर्वक सुरक्षित गरियो।"},
+    "product_updated":       {"EN": "Product updated successfully.",
+                              "NE": "उत्पादन सफलतापूर्वक अद्यावधिक गरियो।"},
+    "product_name_required": {"EN": "Product name (English) is required.",
+                              "NE": "उत्पादनको नाम (अंग्रेजी) आवश्यक छ।"},
+    "product_name_exists":   {"EN": "A product with this English name already exists.",
+                              "NE": "यस अंग्रेजी नामको उत्पादन पहिले नै छ।"},
+    "default_rate_invalid":  {"EN": "Default rate must be zero or a positive number.",
+                              "NE": "पूर्वनिर्धारित दर शून्य वा धनात्मक संख्या हुनुपर्छ।"},
+    "milk_unit_fixed":       {"EN": "Milk unit is fixed as LITER and cannot be changed.",
+                              "NE": "दूधको इकाई LITER मा निर्धारित छ र परिवर्तन गर्न सकिँदैन।"},
+    "no_products":           {"EN": "No products found.",    "NE": "कुनै उत्पादन भेटिएन।"},
+    "col_product_name":      {"EN": "Product Name",          "NE": "उत्पादनको नाम"},
+    "col_default_rate":      {"EN": "Default Rate",          "NE": "पूर्वनिर्धारित दर"},
+    "col_is_milk":           {"EN": "Type",                  "NE": "प्रकार"},
+    "milk_type_label":       {"EN": "Milk",                  "NE": "दूध"},
+    "other_type_label":      {"EN": "Other",                 "NE": "अन्य"},
+    "ph_product_management": {"EN": "Phase 5",               "NE": "चरण ५"},
+}
+
 # ── Product Transaction ────────────────────────────────────────────────────────
 PRODUCT_TXN = {
     "product_transaction":  {"EN": "Product Transaction",   "NE": "उत्पादन कारोबार"},
@@ -331,6 +369,7 @@ PLACEHOLDERS = {
     "ph_reports":              {"EN": "Phase 12 — Coming Soon","NE": "चरण १२ — छिट्टै"},
     "ph_farmers":              {"EN": "Phase 4 — Coming Soon", "NE": "चरण ४ — छिट्टै"},
     "ph_settings":             {"EN": "Phase 10 — Coming Soon","NE": "चरण १० — छिट्टै"},
+    "ph_products":             {"EN": "Phase 5",               "NE": "चरण ५"},
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -339,7 +378,7 @@ PLACEHOLDERS = {
 _ALL: dict[str, dict[str, str]] = {}
 for _section in [
     NAV, ACTIONS, DASHBOARD, AUTH, FARMERS, MILK,
-    PRODUCT_TXN, PAYMENTS, INVENTORY, REPORTS,
+    PRODUCT_MGMT, PRODUCT_TXN, PAYMENTS, INVENTORY, REPORTS,
     SETTINGS, TABLE, STATUS, MESSAGES, PLACEHOLDERS,
 ]:
     _ALL.update(_section)

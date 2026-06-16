@@ -47,6 +47,7 @@ class MainWindow(QMainWindow):
         ("🏪", "inventory",           "inventory"),
         ("📊", "reports",             "reports"),
         ("👨‍🌾","farmers",             "farmers"),
+        ("🛒", "product_management",  "products"),
         ("⚙️", "settings",           "settings"),
     ]
 
@@ -172,6 +173,12 @@ class MainWindow(QMainWindow):
         if key == "dashboard":
             from ui.dashboard.dashboard_page import DashboardPage
             return DashboardPage(navigate_callback=self._navigate)
+        if key == "farmers":
+            from ui.farmers.farmers_page import FarmersPage
+            return FarmersPage()
+        if key == "products":
+            from ui.products.products_page import ProductsPage
+            return ProductsPage()
         return self._placeholder_page(key)
 
     def _placeholder_page(self, key: str) -> QWidget:
@@ -181,7 +188,6 @@ class MainWindow(QMainWindow):
             "payments":           "💳",
             "inventory":          "🏪",
             "reports":            "📊",
-            "farmers":            "👨‍🌾",
             "settings":           "⚙️",
         }
         icon  = icons.get(key, "📄")
