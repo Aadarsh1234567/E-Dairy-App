@@ -5,3 +5,4 @@ bcrypt>=4.0.0
 simpleeval>=0.9.13
 reportlab>=4.0.0
 openpyxl>=3.1.0
+nepali-datetime>=1.0.8

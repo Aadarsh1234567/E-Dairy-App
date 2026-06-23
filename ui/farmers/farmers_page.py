@@ -147,6 +147,8 @@ class FarmersPage(QWidget):
             bal_item.setTextAlignment(Qt.AlignRight | Qt.AlignVCenter)
             if f.outstanding > 0:
                 bal_item.setForeground(QBrush(QColor(COLOR_DANGER)))
+            elif f.outstanding < 0:
+                bal_item.setForeground(QBrush(QColor("#2563EB")))   # blue = advance given
             self._table.setItem(row, self.COL_BALANCE, bal_item)
 
             # Status badge

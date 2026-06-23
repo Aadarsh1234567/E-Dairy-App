@@ -42,12 +42,9 @@ class MainWindow(QMainWindow):
     NAV_ITEMS = [
         ("🏠", "dashboard",           "dashboard"),
         ("🥛", "milk_collection",     "milk_collection"),
-        ("📦", "product_transaction", "product_transaction"),
         ("💳", "payments",            "payments"),
-        ("🏪", "inventory",           "inventory"),
         ("📊", "reports",             "reports"),
         ("👨‍🌾","farmers",             "farmers"),
-        ("🛒", "product_management",  "products"),
         ("⚙️", "settings",           "settings"),
     ]
 
@@ -176,17 +173,18 @@ class MainWindow(QMainWindow):
         if key == "farmers":
             from ui.farmers.farmers_page import FarmersPage
             return FarmersPage()
-        if key == "products":
-            from ui.products.products_page import ProductsPage
-            return ProductsPage()
+        if key == "milk_collection":
+            from ui.collection.milk_collection_page import MilkCollectionPage
+            return MilkCollectionPage()
+        if key == "payments":
+            from ui.payments.payments_page import PaymentsPage
+            return PaymentsPage()
         return self._placeholder_page(key)
 
     def _placeholder_page(self, key: str) -> QWidget:
         icons = {
             "milk_collection":    "🥛",
-            "product_transaction":"📦",
             "payments":           "💳",
-            "inventory":          "🏪",
             "reports":            "📊",
             "settings":           "⚙️",
         }

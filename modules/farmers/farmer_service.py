@@ -206,7 +206,8 @@ def edit_farmer(
 
 def deactivate_farmer(farmer_id: int) -> FarmerRow:
     """
-    Deactivate a farmer. Blocked if outstanding balance > 0.
+    Deactivate a farmer. Blocked if outstanding balance is non-zero
+    (either the farmer owes the dairy, or the dairy has given an advance).
     """
     with get_session() as session:
         farmer = session.query(Farmer).filter_by(farmer_id=farmer_id).first()
@@ -214,7 +215,7 @@ def deactivate_farmer(farmer_id: int) -> FarmerRow:
             raise FarmerError(_t("farmer_not_found"))
 
         balance = _outstanding_balance(session, farmer_id)
-        if balance > 0:
+        if balance != 0:
             raise FarmerError(_t("deactivate_balance", amount=f"{balance:,.2f}"))
 
         farmer.status = "INACTIVE"

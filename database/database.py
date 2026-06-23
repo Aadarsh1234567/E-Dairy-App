@@ -41,12 +41,8 @@ DEFAULT_SETTINGS = {
 
 DEFAULT_PRODUCTS = [
     # (name_english, name_nepali, unit, is_milk, default_rate)
+    # Only Milk is seeded — the dairy operates exclusively with milk collection.
     ("Milk",   "दूध",    "LITER", 1, None),
-    ("Butter", "मक्खन", "KG",    0, None),
-    ("Paneer", "पनीर",  "KG",    0, None),
-    ("Ghee",   "घिउ",   "KG",    0, None),
-    ("Cheese", "चिज",   "KG",    0, None),
-    ("Curd",   "दही",   "KG",    0, None),
 ]
 
 

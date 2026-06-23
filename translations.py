@@ -15,9 +15,7 @@ Adding a new string:
 NAV = {
     "dashboard":            {"EN": "Dashboard",             "NE": "ड्यासबोर्ड"},
     "milk_collection":      {"EN": "Milk Collection",       "NE": "दूध संकलन"},
-    "product_transaction":  {"EN": "Product Transaction",   "NE": "उत्पादन कारोबार"},
     "payments":             {"EN": "Payments",              "NE": "भुक्तानी"},
-    "inventory":            {"EN": "Inventory",             "NE": "मौजदात"},
     "reports":              {"EN": "रिपोर्ट",              "NE": "रिपोर्ट"},
     "farmers":              {"EN": "Farmers",               "NE": "किसानहरू"},
     "settings":             {"EN": "Settings",              "NE": "सेटिङ"},
@@ -56,7 +54,7 @@ DASHBOARD = {
     "today_milk":           {"EN": "Today's Milk",          "NE": "आजको दूध"},
     "today_collection":     {"EN": "Today's Collection",    "NE": "आजको संकलन"},
     "outstanding_balance":  {"EN": "Outstanding Balance",   "NE": "बाँकी रकम"},
-    "products_in_stock":    {"EN": "Products in Stock",     "NE": "स्टकमा उत्पादन"},
+    "active_farmers_count": {"EN": "Active Farmers",       "NE": "सक्रिय किसानहरू"},
     "transactions_today":   {"EN": "Transactions Today",    "NE": "आजका कारोबार"},
     "quick_actions":        {"EN": "Quick Actions",         "NE": "द्रुत कार्यहरू"},
     "recent_transactions":  {"EN": "Recent Transactions",   "NE": "भर्खरका कारोबार"},
@@ -181,55 +179,6 @@ MILK = {
                              "NE": "के तपाईं यो कारोबार रद्द गर्न निश्चित हुनुहुन्छ? यो पूर्ववत हुन सक्दैन।"},
 }
 
-# ── Product Management ─────────────────────────────────────────────────────────
-PRODUCT_MGMT = {
-    "product_management":    {"EN": "Product Management",    "NE": "उत्पादन व्यवस्थापन"},
-    "product_list":          {"EN": "Product List",          "NE": "उत्पादन सूची"},
-    "add_product":           {"EN": "Add Product",           "NE": "उत्पादन थप्नुस्"},
-    "edit_product":          {"EN": "Edit Product",          "NE": "उत्पादन सम्पादन"},
-    "product_name_en":       {"EN": "Name (English)",        "NE": "नाम (अंग्रेजी)"},
-    "product_name_ne":       {"EN": "Name (Nepali)",         "NE": "नाम (नेपाली)"},
-    "unit_label":            {"EN": "Unit",                  "NE": "इकाई"},
-    "unit_liter":            {"EN": "Liter",                 "NE": "लिटर"},
-    "unit_kg":               {"EN": "KG",                   "NE": "केजी"},
-    "default_rate_label":    {"EN": "Default Rate (NPR)",    "NE": "पूर्वनिर्धारित दर (NPR)"},
-    "default_rate_hint":     {"EN": "Pre-filled on transaction screen.",
-                              "NE": "कारोबार स्क्रिनमा स्वतः भरिन्छ।"},
-    "is_milk_label":         {"EN": "Product Type",          "NE": "उत्पादन प्रकार"},
-    "is_milk_yes":           {"EN": "Milk Product",          "NE": "दूध उत्पादन"},
-    "is_milk_no":            {"EN": "Other Product",         "NE": "अन्य उत्पादन"},
-    "product_saved":         {"EN": "Product saved successfully.",
-                              "NE": "उत्पादन सफलतापूर्वक सुरक्षित गरियो।"},
-    "product_updated":       {"EN": "Product updated successfully.",
-                              "NE": "उत्पादन सफलतापूर्वक अद्यावधिक गरियो।"},
-    "product_name_required": {"EN": "Product name (English) is required.",
-                              "NE": "उत्पादनको नाम (अंग्रेजी) आवश्यक छ।"},
-    "product_name_exists":   {"EN": "A product with this English name already exists.",
-                              "NE": "यस अंग्रेजी नामको उत्पादन पहिले नै छ।"},
-    "default_rate_invalid":  {"EN": "Default rate must be zero or a positive number.",
-                              "NE": "पूर्वनिर्धारित दर शून्य वा धनात्मक संख्या हुनुपर्छ।"},
-    "milk_unit_fixed":       {"EN": "Milk unit is fixed as LITER and cannot be changed.",
-                              "NE": "दूधको इकाई LITER मा निर्धारित छ र परिवर्तन गर्न सकिँदैन।"},
-    "no_products":           {"EN": "No products found.",    "NE": "कुनै उत्पादन भेटिएन।"},
-    "col_product_name":      {"EN": "Product Name",          "NE": "उत्पादनको नाम"},
-    "col_default_rate":      {"EN": "Default Rate",          "NE": "पूर्वनिर्धारित दर"},
-    "col_is_milk":           {"EN": "Type",                  "NE": "प्रकार"},
-    "milk_type_label":       {"EN": "Milk",                  "NE": "दूध"},
-    "other_type_label":      {"EN": "Other",                 "NE": "अन्य"},
-    "ph_product_management": {"EN": "Phase 5",               "NE": "चरण ५"},
-}
-
-# ── Product Transaction ────────────────────────────────────────────────────────
-PRODUCT_TXN = {
-    "product_transaction":  {"EN": "Product Transaction",   "NE": "उत्पादन कारोबार"},
-    "product":              {"EN": "Product",               "NE": "उत्पादन"},
-    "select_product":       {"EN": "Select Product",        "NE": "उत्पादन छान्नुस्"},
-    "quantity_kg":          {"EN": "Quantity (KG)",         "NE": "परिमाण (केजी)"},
-    "rate_per_kg":          {"EN": "Rate (NPR/KG)",         "NE": "दर (NPR/केजी)"},
-    "remarks":              {"EN": "Remarks",               "NE": "टिप्पणी"},
-    "txn_saved":            {"EN": "Transaction saved.",    "NE": "कारोबार सुरक्षित गरियो।"},
-}
-
 # ── Payments ───────────────────────────────────────────────────────────────────
 PAYMENTS = {
     "payment_entry":        {"EN": "Record Payment",        "NE": "भुक्तानी दर्ता"},
@@ -245,22 +194,24 @@ PAYMENTS = {
                              "NE": "भुक्तानी रकम शून्यभन्दा बढी हुनुपर्छ।"},
     "zero_balance":         {"EN": "This farmer has no outstanding balance.",
                              "NE": "यस किसानको कुनै बाँकी रकम छैन।"},
-}
-
-# ── Inventory ──────────────────────────────────────────────────────────────────
-INVENTORY = {
-    "inventory":            {"EN": "Inventory",             "NE": "मौजदात"},
-    "stock_in":             {"EN": "Stock In",              "NE": "स्टक भित्र्याउनुस्"},
-    "stock_out":            {"EN": "Stock Out",             "NE": "स्टक बाहिर्याउनुस्"},
-    "current_stock":        {"EN": "Current Stock",         "NE": "हालको स्टक"},
-    "view_history":         {"EN": "View History",          "NE": "इतिहास हेर्नुस्"},
-    "movement_type":        {"EN": "Movement Type",         "NE": "आवागमन प्रकार"},
-    "notes":                {"EN": "Notes",                 "NE": "नोट"},
-    "stock_saved":          {"EN": "Stock movement saved.", "NE": "स्टक आवागमन सुरक्षित गरियो।"},
-    "insufficient_stock":   {"EN": "Insufficient stock. Current stock: {qty} {unit}.",
-                             "NE": "अपर्याप्त स्टक। हालको स्टक: {qty} {unit}।"},
-    "qty_zero":             {"EN": "Quantity must be greater than zero.",
-                             "NE": "परिमाण शून्यभन्दा बढी हुनुपर्छ।"},
+    "payment_remarks":      {"EN": "Remarks (Optional)",    "NE": "टिप्पणी (वैकल्पिक)"},
+    "advance_warning":      {"EN": "⚠ This payment exceeds the outstanding balance. It will be recorded as an advance of NPR {amount} to the farmer.",
+                             "NE": "⚠ यो भुक्तानी बाँकी रकमभन्दा बढी छ। यो किसानलाई NPR {amount} पेश्की रूपमा दर्ता हुनेछ।"},
+    "current_balance_zero": {"EN": "This farmer currently has no outstanding balance. Any amount entered will be recorded as an advance.",
+                             "NE": "यस किसानको हाल कुनै बाँकी रकम छैन। प्रविष्ट गरिएको रकम पेश्की रूपमा दर्ता हुनेछ।"},
+    "current_balance_negative": {"EN": "This farmer already has an advance of NPR {amount}.",
+                             "NE": "यस किसानलाई पहिले नै NPR {amount} पेश्की दिइसकिएको छ।"},
+    "payment_list":          {"EN": "Payment History",        "NE": "भुक्तानी इतिहास"},
+    "no_payments":           {"EN": "No payments found.",     "NE": "कुनै भुक्तानी भेटिएन।"},
+    "col_payment_date":      {"EN": "Date",                   "NE": "मिति"},
+    "col_amount_paid":       {"EN": "Amount Paid",            "NE": "तिरेको रकम"},
+    "col_remarks":           {"EN": "Remarks",                "NE": "टिप्पणी"},
+    "select_farmer_first":   {"EN": "Please select a farmer first.",
+                              "NE": "कृपया पहिले किसान छान्नुस्।"},
+    "balance_after_payment": {"EN": "Balance After Payment",  "NE": "भुक्तानी पछिको बाँकी"},
+    "advance_given_label":   {"EN": "Advance Given",          "NE": "पेश्की दिइएको"},
+    "you_owe_farmer":        {"EN": "Dairy owes farmer",      "NE": "डेरीले किसानलाई तिर्नुपर्ने"},
+    "farmer_owes_dairy":     {"EN": "Farmer owes dairy",      "NE": "किसानले डेरीलाई तिर्नुपर्ने"},
 }
 
 # ── Reports ────────────────────────────────────────────────────────────────────
@@ -341,6 +292,12 @@ TABLE = {
 STATUS = {
     "db_connected":         {"EN": "● Database Connected",  "NE": "● डाटाबेस जोडिएको"},
     "version":              {"EN": "Santosh E-Dairy",       "NE": "सन्तोष इ-डेरी"},
+    "bs_calendar_label":    {"EN": "Bikram Sambat",         "NE": "विक्रम सम्वत्"},
+    "open_calendar_hint":   {"EN": "Click to open calendar","NE": "पात्रो खोल्न क्लिक गर्नुस्"},
+    "time_morning":         {"EN": "Morning",               "NE": "बिहान"},
+    "time_afternoon":       {"EN": "Afternoon",             "NE": "दिउँसो"},
+    "time_evening":         {"EN": "Evening",               "NE": "साँझ"},
+    "time_night":           {"EN": "Night",                 "NE": "राति"},
 }
 
 # ── Error / generic messages ───────────────────────────────────────────────────
@@ -363,13 +320,10 @@ MESSAGES = {
 # ── Placeholders ───────────────────────────────────────────────────────────────
 PLACEHOLDERS = {
     "ph_milk_collection":      {"EN": "Phase 6 — Coming Soon", "NE": "चरण ६ — छिट्टै"},
-    "ph_product_transaction":  {"EN": "Phase 7 — Coming Soon", "NE": "चरण ७ — छिट्टै"},
     "ph_payments":             {"EN": "Phase 8 — Coming Soon", "NE": "चरण ८ — छिट्टै"},
-    "ph_inventory":            {"EN": "Phase 9 — Coming Soon", "NE": "चरण ९ — छिट्टै"},
     "ph_reports":              {"EN": "Phase 12 — Coming Soon","NE": "चरण १२ — छिट्टै"},
     "ph_farmers":              {"EN": "Phase 4 — Coming Soon", "NE": "चरण ४ — छिट्टै"},
     "ph_settings":             {"EN": "Phase 10 — Coming Soon","NE": "चरण १० — छिट्टै"},
-    "ph_products":             {"EN": "Phase 5",               "NE": "चरण ५"},
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -378,7 +332,7 @@ PLACEHOLDERS = {
 _ALL: dict[str, dict[str, str]] = {}
 for _section in [
     NAV, ACTIONS, DASHBOARD, AUTH, FARMERS, MILK,
-    PRODUCT_MGMT, PRODUCT_TXN, PAYMENTS, INVENTORY, REPORTS,
+    PAYMENTS, REPORTS,
     SETTINGS, TABLE, STATUS, MESSAGES, PLACEHOLDERS,
 ]:
     _ALL.update(_section)
