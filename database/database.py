@@ -19,7 +19,7 @@ from database.models import (
 # ─────────────────────────────────────────────────────────────
 # Constants
 # ─────────────────────────────────────────────────────────────
-CURRENT_SCHEMA_VERSION = 1
+CURRENT_SCHEMA_VERSION = 2
 APP_VERSION = "1.0.0"
 DB_FILENAME = "dairy_management.db"
 
@@ -37,6 +37,7 @@ DEFAULT_SETTINGS = {
     "app_version":               APP_VERSION,
     "idle_lock_minutes":         "15",
     "auto_backup_hour":          "18",
+    "receipt_width_mm":          "80",
 }
 
 DEFAULT_PRODUCTS = [
@@ -159,6 +160,26 @@ def _create_indexes():
         conn.commit()
 
 
+def _migrate_v1_to_v2(session: Session):
+    """
+    v2 migration: Add bonus_amount to transactions and milk_details,
+    and bank_account to farmers.
+    Uses IF NOT EXISTS pattern via PRAGMA to be safe on repeated runs.
+    """
+    from sqlalchemy import text
+    conn = session.connection()
+
+    # Check and add each column only if missing
+    def _add_col_if_missing(table, col, typedef):
+        existing = [r[1] for r in conn.execute(text(f"PRAGMA table_info({table})")).fetchall()]
+        if col not in existing:
+            conn.execute(text(f"ALTER TABLE {table} ADD COLUMN {col} {typedef}"))
+
+    _add_col_if_missing("transactions", "bonus_amount", "NUMERIC(10,2) NOT NULL DEFAULT 0")
+    _add_col_if_missing("milk_details", "bonus_amount", "NUMERIC(10,2) NOT NULL DEFAULT 0")
+    _add_col_if_missing("farmers",      "bank_account", "VARCHAR(50)")
+
+
 def _run_migrations(session: Session, is_new: bool):
     """Check schema version and apply any pending migrations."""
     if is_new:
@@ -166,7 +187,7 @@ def _run_migrations(session: Session, is_new: bool):
         session.add(SchemaVersion(
             version_number=CURRENT_SCHEMA_VERSION,
             applied_at=datetime.utcnow(),
-            description="Initial schema — Version 1 baseline including bilingual support",
+            description="Version 2 — bonus_amount, bank_account added",
         ))
         session.commit()
         return
@@ -182,7 +203,7 @@ def _run_migrations(session: Session, is_new: bool):
     if db_version < CURRENT_SCHEMA_VERSION:
         # Future migrations go here, keyed by version number
         migrations = {
-            # 2: _migrate_v1_to_v2,
+            2: _migrate_v1_to_v2,
         }
         for v in range(db_version + 1, CURRENT_SCHEMA_VERSION + 1):
             if v in migrations:

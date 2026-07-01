@@ -52,6 +52,7 @@ class MilkEntryRow:
     fat:                   float
     snf:                   float
     rate:                  float
+    bonus_amount:          float
     amount:                float
     status:                str
     cancellation_reason:    str
@@ -125,9 +126,12 @@ def save_milk_collection(
     quantity:         float,
     fat:               float,
     snf:               float,
+    bonus_amount:      float = 0.0,
 ) -> MilkEntryRow:
     """
     Save a new milk collection transaction.
+    bonus_amount is an optional manual bonus (NPR), added directly to the
+    amount owed to the farmer alongside the formula-calculated milk amount.
     Raises MilkError on any validation failure.
     """
     # ── Validation ──────────────────────────────────────────────
@@ -137,6 +141,10 @@ def save_milk_collection(
         raise MilkError(_t("fat_invalid"))
     if snf is None or snf < 0:
         raise MilkError(_t("snf_invalid"))
+    if bonus_amount is None:
+        bonus_amount = 0.0
+    if bonus_amount < 0:
+        raise MilkError(_t("bonus_invalid"))
     if session_value not in ("MORNING", "EVENING"):
         raise MilkError(_t("farmer_not_found"))  # defensive — UI should never allow this
     if milk_type not in ("COW", "BUFFALO"):
@@ -178,6 +186,7 @@ def save_milk_collection(
             product_id       = milk_product.product_id,
             quantity         = quantity,
             rate             = rate,
+            bonus_amount     = bonus_amount,
             status           = "ACTIVE",
             created_at       = datetime.utcnow(),
         )
@@ -194,6 +203,7 @@ def save_milk_collection(
             fat              = fat,
             snf              = snf,
             formula_used     = formula,
+            bonus_amount     = bonus_amount,
         )
         session.add(detail)
 
@@ -207,7 +217,8 @@ def save_milk_collection(
         write_audit_log(session, "TRANSACTION_CREATED",
                         f"Milk collection: {farmer.farmer_code} — "
                         f"{session_value} {milk_type} {quantity}L "
-                        f"FAT={fat} SNF={snf} Rate={rate}",
+                        f"FAT={fat} SNF={snf} Rate={rate}"
+                        + (f" Bonus={bonus_amount}" if bonus_amount > 0 else ""),
                         reference_id=txn.transaction_id)
         session.commit()
 
@@ -223,7 +234,8 @@ def save_milk_collection(
             fat                   = float(fat),
             snf                   = float(snf),
             rate                  = rate,
-            amount                = round(float(quantity) * rate, 2),
+            bonus_amount          = float(bonus_amount),
+            amount                = round(float(quantity) * rate + float(bonus_amount), 2),
             status                = "ACTIVE",
             cancellation_reason   = "",
         )
@@ -284,7 +296,8 @@ def get_recent_milk_entries(limit: int = 10) -> list[MilkEntryRow]:
                 fat                     = float(detail.fat),
                 snf                     = float(detail.snf),
                 rate                    = float(txn.rate),
-                amount                  = round(float(txn.quantity) * float(txn.rate), 2),
+                bonus_amount            = float(txn.bonus_amount or 0),
+                amount                  = round(float(txn.quantity) * float(txn.rate) + float(txn.bonus_amount or 0), 2),
                 status                  = txn.status,
                 cancellation_reason     = txn.cancellation_reason or "",
             ))

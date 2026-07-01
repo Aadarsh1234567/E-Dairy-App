@@ -375,3 +375,66 @@ def set_language(lang: str) -> None:
 def all_keys() -> list[str]:
     """Return all translation keys (for testing completeness)."""
     return list(_ALL.keys())
+
+
+# ── Reports (additional keys) ──────────────────────────────────────────────────
+_REPORTS_EXTRA = {
+    "generate_report":   {"EN": "Generate Report",    "NE": "रिपोर्ट बनाउनुस्"},
+    "all_farmers":       {"EN": "All Farmers",        "NE": "सबै किसान"},
+    "select_farmer":     {"EN": "Select Farmer",      "NE": "किसान छान्नुस्"},
+    "report_type":       {"EN": "Report Type",        "NE": "रिपोर्ट प्रकार"},
+    "select_date_range": {"EN": "Select Date Range",  "NE": "मिति दायरा छान्नुस्"},
+    "no_report_data":    {"EN": "No data found for the selected filters.",
+                          "NE": "चयन गरिएको फिल्टरको लागि कुनै डाटा भेटिएन।"},
+    "receipt_printed":   {"EN": "Receipt generated successfully.",
+                          "NE": "रसिद सफलतापूर्वक तयार भयो।"},
+    "col_balance":       {"EN": "Balance",            "NE": "बाँकी"},
+    "col_receipt":       {"EN": "Receipt No.",        "NE": "रसिद नं."},
+}
+_ALL.update(_REPORTS_EXTRA)
+
+
+# ── Settings page ──────────────────────────────────────────────────────────────
+_SETTINGS_EXTRA = {
+    "organization_settings":   {"EN": "Organization",                   "NE": "संस्था विवरण"},
+    "organization_name_en":    {"EN": "Name (English)",                  "NE": "नाम (अंग्रेजी)"},
+    "organization_name_ne":    {"EN": "Name (Nepali)",                   "NE": "नाम (नेपाली)"},
+    "organization_address_en": {"EN": "Address (English)",               "NE": "ठेगाना (अंग्रेजी)"},
+    "organization_address_ne": {"EN": "Address (Nepali)",                "NE": "ठेगाना (नेपाली)"},
+    "organization_phone":      {"EN": "Phone Number",                    "NE": "फोन नम्बर"},
+    "system_settings":         {"EN": "System",                         "NE": "प्रणाली"},
+    "language_setting":        {"EN": "Default Language",               "NE": "पूर्वनिर्धारित भाषा"},
+    "idle_lock_setting":       {"EN": "Auto-Lock After (minutes)",      "NE": "स्वतः लक (मिनेट)"},
+    "receipt_width_setting":   {"EN": "Thermal Receipt Width",          "NE": "थर्मल रसिद चौडाइ"},
+    "backup_hour_setting":     {"EN": "Auto-Backup Hour (24h)",         "NE": "स्वतः ब्याकअप घन्टा (२४घ)"},
+    "pricing_formula_setting": {"EN": "Milk Pricing Formula",           "NE": "दूध मूल्य सूत्र"},
+    "formula_validated":       {"EN": "Formula is valid.",              "NE": "सूत्र सही छ।"},
+    "validate_formula":        {"EN": "Validate",                       "NE": "जाँच गर्नुस्"},
+    "save_settings":           {"EN": "Save Settings",                  "NE": "सेटिङ सुरक्षित गर्नुस्"},
+    "receipt_58mm":            {"EN": "58mm",                           "NE": "५८mm"},
+    "receipt_80mm":            {"EN": "80mm",                           "NE": "८०mm"},
+    "minutes_label":           {"EN": "minutes",                        "NE": "मिनेट"},
+    "hour_label":              {"EN": "hour",                           "NE": "घन्टा"},
+    "current_formula":         {"EN": "Current formula",                "NE": "हालको सूत्र"},
+    "formula_test_result":     {"EN": "Test result (FAT=4, SNF=8)",     "NE": "परीक्षण नतिजा (FAT=४, SNF=८)"},
+    "formula_variables":       {"EN": "Variables: fat, snf",            "NE": "चल: fat, snf"},
+    "security_settings":       {"EN": "Security",                       "NE": "सुरक्षा"},
+    "settings_saved_ok":       {"EN": "Settings saved successfully.",   "NE": "सेटिङ सफलतापूर्वक सुरक्षित गरियो।"},
+    "language_ne":             {"EN": "Nepali (नेपाली)",               "NE": "नेपाली"},
+    "language_en":             {"EN": "English",                        "NE": "अंग्रेजी"},
+}
+_ALL.update(_SETTINGS_EXTRA)
+
+
+# ── Bonus + Bank Account (additional features) ──────────────────────────────────
+_BONUS_BANK_EXTRA = {
+    "bonus_amount":       {"EN": "Bonus (NPR)",            "NE": "बोनस (NPR)"},
+    "bonus_invalid":      {"EN": "Bonus amount cannot be negative.",
+                           "NE": "बोनस रकम ऋणात्मक हुन सक्दैन।"},
+    "bonus_hint":         {"EN": "Optional — added directly to the farmer's total.",
+                           "NE": "वैकल्पिक — किसानको कुल रकममा सिधै थपिन्छ।"},
+    "bank_account":       {"EN": "Bank Account Number",     "NE": "बैंक खाता नम्बर"},
+    "col_bank_account":   {"EN": "Bank Account",            "NE": "बैंक खाता"},
+    "bank_account_label": {"EN": "Bank",                    "NE": "बैंक"},
+}
+_ALL.update(_BONUS_BANK_EXTRA)

@@ -29,9 +29,10 @@ class FarmersPage(QWidget):
     COL_NAME    = 1
     COL_PHONE   = 2
     COL_ADDRESS = 3
-    COL_BALANCE = 4
-    COL_STATUS  = 5
-    COL_ACTIONS = 6
+    COL_BANK    = 4
+    COL_BALANCE = 5
+    COL_STATUS  = 6
+    COL_ACTIONS = 7
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -80,7 +81,7 @@ class FarmersPage(QWidget):
         root.addLayout(search_row)
 
         # ── Table ────────────────────────────────────────────────
-        self._table = QTableWidget(0, 7)
+        self._table = QTableWidget(0, 8)
         self._refresh_headers()
         self._table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self._table.horizontalHeader().setSectionResizeMode(self.COL_ACTIONS, QHeaderView.ResizeToContents)
@@ -106,7 +107,7 @@ class FarmersPage(QWidget):
     def _refresh_headers(self):
         self._table.setHorizontalHeaderLabels([
             _t("col_code"), _t("col_name"), _t("col_phone"),
-            _t("col_address"), _t("outstanding_balance"),
+            _t("col_address"), _t("col_bank_account"), _t("outstanding_balance"),
             _t("col_status"), _t("col_actions"),
         ])
 
@@ -141,6 +142,7 @@ class FarmersPage(QWidget):
             self._table.setItem(row, self.COL_NAME, QTableWidgetItem(display_name))
             self._table.setItem(row, self.COL_PHONE,   QTableWidgetItem(f.phone))
             self._table.setItem(row, self.COL_ADDRESS, QTableWidgetItem(f.address))
+            self._table.setItem(row, self.COL_BANK,    QTableWidgetItem(f.bank_account or "—"))
 
             # Balance
             bal_item = QTableWidgetItem(f"NPR {f.outstanding:,.2f}")

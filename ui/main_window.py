@@ -179,6 +179,12 @@ class MainWindow(QMainWindow):
         if key == "payments":
             from ui.payments.payments_page import PaymentsPage
             return PaymentsPage()
+        if key == "reports":
+            from ui.reports.reports_page import ReportsPage
+            return ReportsPage()
+        if key == "settings":
+            from ui.settings.settings_page import SettingsPage
+            return SettingsPage()
         return self._placeholder_page(key)
 
     def _placeholder_page(self, key: str) -> QWidget:

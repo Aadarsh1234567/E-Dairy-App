@@ -339,17 +339,17 @@ class DashboardPage(QWidget):
                 milk_qty = float(r or 0)
 
             # Today collection
-            today_rows = s.query(Transaction.quantity, Transaction.rate).filter(and_(
+            today_rows = s.query(Transaction.quantity, Transaction.rate, Transaction.bonus_amount).filter(and_(
                 Transaction.transaction_date == today,
                 Transaction.status == "ACTIVE",
             )).all()
-            today_total = sum(float(q) * float(r) for q, r in today_rows)
+            today_total = sum(float(q) * float(r) + float(b or 0) for q, r, b in today_rows)
 
             # Outstanding
-            all_active = s.query(Transaction.quantity, Transaction.rate).filter_by(
+            all_active = s.query(Transaction.quantity, Transaction.rate, Transaction.bonus_amount).filter_by(
                 status="ACTIVE"
             ).all()
-            total_owed = sum(float(q) * float(r) for q, r in all_active)
+            total_owed = sum(float(q) * float(r) + float(b or 0) for q, r, b in all_active)
             total_paid = float(s.query(func.sum(Payment.amount_paid)).scalar() or 0)
             outstanding = total_owed - total_paid
 

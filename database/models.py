@@ -25,6 +25,7 @@ class Farmer(Base):
     name_nepali  = Column(String(200), nullable=True)
     phone        = Column(String(20),  nullable=True)
     address      = Column(String(300), nullable=True)
+    bank_account = Column(String(50),  nullable=True)
     created_at   = Column(DateTime,    default=datetime.utcnow)
     status       = Column(String(10),  nullable=False, default="ACTIVE")
 
@@ -81,7 +82,8 @@ class Transaction(Base):
     product_id          = Column(Integer,      ForeignKey("products.product_id"), nullable=False)
     quantity            = Column(Numeric(10,2),nullable=False)
     rate                = Column(Numeric(10,2),nullable=False)
-    # amount is NOT stored — always computed as quantity * rate
+    bonus_amount        = Column(Numeric(10,2),nullable=False, default=0)
+    # amount is NOT stored — always computed as (quantity * rate) + bonus_amount
     status              = Column(String(10),   nullable=False, default="ACTIVE")
     cancellation_reason = Column(Text,         nullable=True)
     cancelled_at        = Column(DateTime,     nullable=True)
@@ -99,8 +101,8 @@ class Transaction(Base):
 
     @property
     def amount(self):
-        """Computed amount — never stored."""
-        return float(self.quantity) * float(self.rate)
+        """Computed amount — never stored. Includes bonus."""
+        return float(self.quantity) * float(self.rate) + float(self.bonus_amount or 0)
 
 
 # ─────────────────────────────────────────────────────────────
@@ -119,6 +121,7 @@ class MilkDetail(Base):
     fat              = Column(Numeric(5,2), nullable=False)
     snf              = Column(Numeric(5,2), nullable=False)
     formula_used     = Column(Text,         nullable=False)   # snapshot of formula at save time
+    bonus_amount     = Column(Numeric(10,2),nullable=False, default=0)
 
     __table_args__ = (
         UniqueConstraint("transaction_date", "farmer_id", "session", name="uq_milk_duplicate"),

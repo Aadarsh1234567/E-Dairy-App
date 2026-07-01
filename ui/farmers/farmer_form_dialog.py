@@ -65,6 +65,7 @@ class FarmerFormDialog(QDialog):
         self._name_ne_input= self._field(lay, "farmer_name_ne", required=False)
         self._phone_input  = self._field(lay, "phone",           required=False)
         self._address_input= self._field(lay, "address",         required=False)
+        self._bank_input   = self._field(lay, "bank_account",    required=False)
 
         # Message
         self._msg = QLabel("")
@@ -105,7 +106,8 @@ class FarmerFormDialog(QDialog):
         self._code_input.setFocus()
         # Enter on any field triggers save
         for f in [self._code_input, self._name_en_input,
-                  self._name_ne_input, self._phone_input, self._address_input]:
+                  self._name_ne_input, self._phone_input, self._address_input,
+                  self._bank_input]:
             f.returnPressed.connect(self._save)
 
     def _field(self, parent_layout, key: str, required: bool) -> QLineEdit:
@@ -134,6 +136,7 @@ class FarmerFormDialog(QDialog):
         self._name_ne_input.setText(r.name_nepali)
         self._phone_input.setText(r.phone)
         self._address_input.setText(r.address)
+        self._bank_input.setText(r.bank_account)
 
     # ── Save ────────────────────────────────────────────────────────────────
     def _save(self):
@@ -150,6 +153,7 @@ class FarmerFormDialog(QDialog):
                     name_nepali  = self._name_ne_input.text(),
                     phone        = self._phone_input.text(),
                     address      = self._address_input.text(),
+                    bank_account = self._bank_input.text(),
                 )
                 self._ok(_t("farmer_updated"))
             else:
@@ -159,6 +163,7 @@ class FarmerFormDialog(QDialog):
                     name_nepali  = self._name_ne_input.text(),
                     phone        = self._phone_input.text(),
                     address      = self._address_input.text(),
+                    bank_account = self._bank_input.text(),
                 )
                 self._ok(_t("farmer_saved"))
             self.saved.emit(row.farmer_code)

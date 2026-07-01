@@ -116,6 +116,7 @@ class MilkCollectionPage(QWidget):
         self._qty_spin = self._spin_field(row3, "quantity", 0, 10000, 2)
         self._fat_spin = self._spin_field(row3, "fat",      0, 100,   2)
         self._snf_spin = self._spin_field(row3, "snf",      0, 100,   2)
+        self._bonus_spin = self._spin_field(row3, "bonus_amount", 0, 999999, 2)
 
         rate_col = QVBoxLayout(); rate_col.setSpacing(4)
         rate_col.addWidget(self._field_label("rate"))
@@ -141,6 +142,7 @@ class MilkCollectionPage(QWidget):
         self._qty_spin.valueChanged.connect(self._update_preview)
         self._fat_spin.valueChanged.connect(self._update_preview)
         self._snf_spin.valueChanged.connect(self._update_preview)
+        self._bonus_spin.valueChanged.connect(self._update_preview)
 
         self._msg = QLabel("")
         self._msg.setWordWrap(True)
@@ -258,13 +260,14 @@ class MilkCollectionPage(QWidget):
         fat = self._fat_spin.value()
         snf = self._snf_spin.value()
         qty = self._qty_spin.value()
+        bonus = self._bonus_spin.value()
         if fat <= 0 and snf <= 0:
             self._rate_display.setText("NPR 0.00")
-            self._amount_display.setText("NPR 0.00")
+            self._amount_display.setText(f"NPR {bonus:,.2f}" if bonus > 0 else "NPR 0.00")
             return
         try:
             rate = preview_rate(fat, snf)
-            amount = round(qty * rate, 2)
+            amount = round(qty * rate + bonus, 2)
             self._rate_display.setText(f"NPR {rate:,.2f}")
             self._amount_display.setText(f"NPR {amount:,.2f}")
         except MilkError:
@@ -286,6 +289,7 @@ class MilkCollectionPage(QWidget):
         quantity       = self._qty_spin.value()
         fat            = self._fat_spin.value()
         snf            = self._snf_spin.value()
+        bonus          = self._bonus_spin.value()
         today          = date.today()
 
         if check_duplicate(self._farmer.farmer_id, today, session_value):
@@ -301,6 +305,7 @@ class MilkCollectionPage(QWidget):
                 quantity         = quantity,
                 fat              = fat,
                 snf              = snf,
+                bonus_amount     = bonus,
             )
             self._success(_t("milk_saved"))
             self._reset_for_next_entry()
@@ -319,6 +324,7 @@ class MilkCollectionPage(QWidget):
         self._qty_spin.setValue(0)
         self._fat_spin.setValue(0)
         self._snf_spin.setValue(0)
+        self._bonus_spin.setValue(0)
         self._rate_display.setText("NPR 0.00")
         self._amount_display.setText("NPR 0.00")
         self._msg.setText("")

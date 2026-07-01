@@ -34,6 +34,8 @@ class PaymentsPage(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._farmer = None
+        self._last_payment = None
+        self._last_balance_after = 0.0
         self._setup_ui()
         self._load_recent()
 
@@ -152,6 +154,18 @@ class PaymentsPage(QWidget):
         """)
         self._clear_btn.clicked.connect(self._clear_form)
         btn_row.addWidget(self._clear_btn)
+
+        self._print_btn = QPushButton(f"🖨  {_t('print_receipt')}")
+        self._print_btn.setEnabled(False)
+        self._print_btn.setStyleSheet("""
+            QPushButton {background:#7C3AED;color:white;border:none;
+                border-radius:6px;padding:10px 18px;font-size:10pt;font-weight:bold;}
+            QPushButton:hover{background:#6D28D9;}
+            QPushButton:disabled{background:#D1D5DB;color:#9CA3AF;}
+        """)
+        self._print_btn.setCursor(Qt.PointingHandCursor)
+        self._print_btn.clicked.connect(self._print_receipt)
+        btn_row.addWidget(self._print_btn)
         btn_row.addStretch()
 
         self._save_btn = QPushButton(f"💾  {_t('save')}")
@@ -286,7 +300,7 @@ class PaymentsPage(QWidget):
             self._preview_banner.hide()
 
     def _save_payment(self):
-        from modules.payments.payment_service import record_payment, PaymentError
+        from modules.payments.payment_service import record_payment, get_outstanding_balance, PaymentError
 
         self._msg.setText("")
         if not self._farmer:
@@ -298,12 +312,15 @@ class PaymentsPage(QWidget):
         remarks = self._remarks_input.text().strip()
 
         try:
-            record_payment(
+            row = record_payment(
                 farmer_id     = self._farmer.farmer_id,
                 payment_date   = date.today(),
                 amount_paid     = amount,
                 remarks          = remarks,
             )
+            self._last_payment = row
+            self._last_balance_after = get_outstanding_balance(self._farmer.farmer_id)
+            self._print_btn.setEnabled(True)
             self._success(_t("payment_saved"))
             self._clear_form()
             self._load_recent()
@@ -323,6 +340,7 @@ class PaymentsPage(QWidget):
         self._remarks_input.clear()
         self._preview_banner.hide()
         self._msg.setText("")
+        self._print_btn.setEnabled(False)
         self._update_date_display()
         self._code_input.setFocus()
 
@@ -355,6 +373,28 @@ class PaymentsPage(QWidget):
             self._table.setItem(row, 3, QTableWidgetItem(p.receipt_number or "—"))
             self._table.setItem(row, 4, QTableWidgetItem(p.remarks or "—"))
             self._table.setRowHeight(row, 34)
+
+    def _print_receipt(self):
+        if not self._last_payment:
+            return
+        from services.pdf_service import generate_payment_receipt_pdf
+        from database.database import get_setting
+        from PySide6.QtWidgets import QFileDialog
+        lang = get_setting("default_language", "NE")
+        width_mm = int(get_setting("receipt_width_mm", "80"))
+        name = f"receipt_{self._last_payment.receipt_number or 'payment'}.pdf"
+        path, _ = QFileDialog.getSaveFileName(self, _t("print_receipt"), name, "PDF (*.pdf)")
+        if not path:
+            return
+        try:
+            generate_payment_receipt_pdf(
+                payment_row=self._last_payment,
+                balance_after=self._last_balance_after,
+                output_path=path, lang=lang, width_mm=width_mm,
+            )
+            self._success(_t("receipt_printed"))
+        except Exception as e:
+            self._error(_t("unexpected_error", err=str(e)))
 
     def showEvent(self, event):
         super().showEvent(event)

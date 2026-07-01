@@ -55,13 +55,13 @@ class PaymentRow:
 
 def _outstanding_balance(session, farmer_id: int) -> float:
     """
-    Live outstanding balance = SUM(ACTIVE transaction amounts) - SUM(payments).
+    Live outstanding balance = SUM(ACTIVE transaction amounts incl. bonus) - SUM(payments).
     Can be negative (dairy owes farmer an advance).
     """
     active_txns = session.query(
-        Transaction.quantity, Transaction.rate
+        Transaction.quantity, Transaction.rate, Transaction.bonus_amount
     ).filter_by(farmer_id=farmer_id, status="ACTIVE").all()
-    total_owed = sum(float(q) * float(r) for q, r in active_txns)
+    total_owed = sum(float(q) * float(r) + float(b or 0) for q, r, b in active_txns)
 
     paid_row = session.query(func.sum(Payment.amount_paid)).filter_by(
         farmer_id=farmer_id

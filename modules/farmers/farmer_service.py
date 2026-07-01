@@ -27,6 +27,7 @@ class FarmerRow:
     name_nepali:  str
     phone:        str
     address:      str
+    bank_account: str
     status:       str
     outstanding:  float   # live balance
 
@@ -43,11 +44,14 @@ def _t(key, **kw):
 
 
 def _outstanding_balance(session, farmer_id: int) -> float:
-    """Outstanding = SUM(active transaction amounts) - SUM(payments)."""
+    """Outstanding = SUM(active transaction amounts including bonus) - SUM(payments)."""
     active_txns = session.query(
-        Transaction.quantity, Transaction.rate
+        Transaction.quantity, Transaction.rate, Transaction.bonus_amount
     ).filter_by(farmer_id=farmer_id, status="ACTIVE").all()
-    total_owed = sum(float(q) * float(r) for q, r in active_txns)
+    total_owed = sum(
+        float(q) * float(r) + float(b or 0)
+        for q, r, b in active_txns
+    )
 
     paid_row = session.query(func.sum(Payment.amount_paid)).filter_by(
         farmer_id=farmer_id
@@ -64,6 +68,7 @@ def _to_row(f: Farmer, session) -> FarmerRow:
         name_nepali  = f.name_nepali or "",
         phone        = f.phone or "",
         address      = f.address or "",
+        bank_account = f.bank_account or "",
         status       = f.status,
         outstanding  = _outstanding_balance(session, f.farmer_id),
     )
@@ -119,15 +124,15 @@ def add_farmer(
     name_nepali:  str = "",
     phone:        str = "",
     address:      str = "",
+    bank_account: str = "",
 ) -> FarmerRow:
-    """
-    Create a new farmer. Raises FarmerError on validation failure.
-    """
+    """Create a new farmer. Raises FarmerError on validation failure."""
     farmer_code  = farmer_code.strip()
     name_english = name_english.strip()
     name_nepali  = name_nepali.strip()
     phone        = phone.strip()
     address      = address.strip()
+    bank_account = bank_account.strip()
 
     if not farmer_code:
         raise FarmerError(_t("code_required"))
@@ -135,7 +140,6 @@ def add_farmer(
         raise FarmerError(_t("name_required"))
 
     with get_session() as session:
-        # Duplicate code check
         if session.query(Farmer).filter_by(farmer_code=farmer_code).first():
             raise FarmerError(_t("code_exists"))
 
@@ -145,17 +149,17 @@ def add_farmer(
             name_nepali  = name_nepali or None,
             phone        = phone or None,
             address      = address or None,
+            bank_account = bank_account or None,
             status       = "ACTIVE",
             created_at   = datetime.utcnow(),
         )
         session.add(farmer)
-        session.flush()   # get farmer_id before commit
+        session.flush()
 
         write_audit_log(session, "FARMER_CREATED",
                         f"Farmer added: {farmer_code} — {name_english}",
                         reference_id=farmer.farmer_id)
         session.commit()
-
         return _to_row(farmer, session)
 
 
@@ -166,15 +170,15 @@ def edit_farmer(
     name_nepali:  str = "",
     phone:        str = "",
     address:      str = "",
+    bank_account: str = "",
 ) -> FarmerRow:
-    """
-    Update an existing farmer's details. farmer_code uniqueness re-checked.
-    """
+    """Update an existing farmer's details. farmer_code uniqueness re-checked."""
     farmer_code  = farmer_code.strip()
     name_english = name_english.strip()
     name_nepali  = name_nepali.strip()
     phone        = phone.strip()
     address      = address.strip()
+    bank_account = bank_account.strip()
 
     if not farmer_code:
         raise FarmerError(_t("code_required"))
@@ -186,7 +190,6 @@ def edit_farmer(
         if not farmer:
             raise FarmerError(_t("farmer_not_found"))
 
-        # Code uniqueness — allow same code for same farmer
         existing = session.query(Farmer).filter_by(farmer_code=farmer_code).first()
         if existing and existing.farmer_id != farmer_id:
             raise FarmerError(_t("code_exists"))
@@ -196,6 +199,7 @@ def edit_farmer(
         farmer.name_nepali  = name_nepali or None
         farmer.phone        = phone or None
         farmer.address      = address or None
+        farmer.bank_account = bank_account or None
 
         write_audit_log(session, "FARMER_UPDATED",
                         f"Farmer updated: {farmer_code} — {name_english}",
